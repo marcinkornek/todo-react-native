@@ -1,26 +1,99 @@
-import React from 'react'
-import { View } from 'react-native'
-import { ListItem } from '../../components'
+import React, { Component } from 'react'
+import { Button, FlatList, View } from 'react-native'
+import { ListItem, ListItemForm } from '../../components'
 
-const todo = {
-  title: 'todo 1',
-  completed: false,
-  createdAt: new Date()
-}
+const todos = [
+  {
+    key: 1,
+    title: 'todo 1',
+    completed: false,
+    createdAt: new Date()
+  },
+  {
+    key: 2,
+    title: 'todo 2',
+    completed: false,
+    createdAt: new Date()
+  },
+  {
+    key: 3,
+    title: 'todo 3',
+    completed: false,
+    createdAt: new Date()
+  }
+]
 
-const TodoList = () => {
-  return (
-    <View>
+class TodoList extends Component {
+  state = {
+    showAddForm: false,
+    items: todos
+  }
+
+  onAddTodo = (title) => {
+    const todo = {
+      key: Math.random(),
+      title,
+      completed: false,
+      createdAt: new Date()
+    }
+
+    this.toggleShowForm()
+
+    this.setState((prevState) => {
+      return { items: [...prevState.items, todo] }
+    })
+  }
+
+  toggleShowForm = () => {
+    this.setState((prevState) => {
+      return { showAddForm: !prevState.showAddForm }
+    })
+  }
+
+  renderItem = ({ item }) => {
+    return (
       <ListItem
-        todo={todo}
+        todo={item}
         onUpdate={() => {}}
         onDelete={() => {}}
       />
-    </View>
-  )
+    )
+  }
+
+  renderList = () => {
+    const { items } = this.state
+
+    return (
+      <FlatList
+        removeClippedSubviews
+        data={items}
+        renderItem={this.renderItem}
+      />
+    )
+  }
+
+  render() {
+    const { showAddForm } = this.state
+
+    return (
+      <View>
+        {this.renderList()}
+        {
+        showAddForm &&
+        <ListItemForm
+          onSubmit={this.onAddTodo}
+        />
+        }
+        <Button
+          onPress={this.toggleShowForm}
+          title='Add new todo'
+        />
+      </View>
+    )
+  }
 }
 
-TodoList.navigationOptions = ({ _navigation }) => {
+TodoList.navigationOptions = () => {
   return {
     headerTitle: 'Todo list'
   }

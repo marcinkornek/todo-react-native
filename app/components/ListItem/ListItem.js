@@ -38,7 +38,7 @@ ListItem.propTypes = {
   todo: PropTypes.shape({
     title: PropTypes.string,
     completed: PropTypes.bool,
-    createdAt: PropTypes.number
+    createdAt: PropTypes.instanceOf(Date)
   }),
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
