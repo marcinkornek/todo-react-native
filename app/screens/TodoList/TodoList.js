@@ -29,6 +29,32 @@ class TodoList extends Component {
     items: todos
   }
 
+  onToggleTodo = (key) => {
+    this.setState((prevState) => {
+      return {
+        items: prevState.items.map((item) => {
+          if (item.key === key) {
+            return ({
+              ...item,
+              completed: !item.completed
+            })
+          }
+          return item
+        })
+      }
+    })
+  }
+
+  onDeleteTodo = (key) => {
+    this.setState((prevState) => {
+      return {
+        items: prevState.items.filter((item) => {
+          return item.key !== key
+        })
+      }
+    })
+  }
+
   onAddTodo = (title) => {
     const todo = {
       key: Math.random(),
@@ -54,8 +80,8 @@ class TodoList extends Component {
     return (
       <ListItem
         todo={item}
-        onUpdate={() => {}}
-        onDelete={() => {}}
+        onToggle={this.onToggleTodo}
+        onDelete={this.onDeleteTodo}
       />
     )
   }
@@ -86,6 +112,7 @@ class TodoList extends Component {
         }
         <Button
           onPress={this.toggleShowForm}
+          disabled={showAddForm}
           title='Add new todo'
         />
       </View>

@@ -8,7 +8,7 @@ const {
   containerStyle, checkboxStyle, textStyle
 } = styles
 
-const ListItem = ({ todo, onUpdate, onDelete }) => {
+const ListItem = ({ todo, onToggle, onDelete }) => {
   return (
     <View
       style={containerStyle}
@@ -16,13 +16,13 @@ const ListItem = ({ todo, onUpdate, onDelete }) => {
       <CheckBox
         checked={todo.completed}
         style={checkboxStyle}
-        onPress={() => { return onUpdate(todo) }}
+        onPress={() => { return onToggle(todo.key) }}
       />
       <Text style={textStyle}>
         {todo.title}
       </Text>
       <TouchableOpacity
-        onPress={() => { return onDelete(todo) }}
+        onPress={() => { return onDelete(todo.key) }}
       >
         <Icon
           name='ios-trash-outline'
@@ -40,7 +40,7 @@ ListItem.propTypes = {
     completed: PropTypes.bool,
     createdAt: PropTypes.instanceOf(Date)
   }),
-  onUpdate: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }
 
