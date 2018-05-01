@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import { Button, FlatList, View } from 'react-native'
+import uuidv1 from 'uuid/v1'
 import { ListItem, ListItemForm } from '../../components'
 
 const todos = [
   {
-    key: 1,
+    key: '1',
     title: 'todo 1',
     completed: false,
     createdAt: new Date()
   },
   {
-    key: 2,
+    key: '2',
     title: 'todo 2',
     completed: false,
     createdAt: new Date()
   },
   {
-    key: 3,
+    key: '3',
     title: 'todo 3',
     completed: false,
     createdAt: new Date()
@@ -57,7 +58,7 @@ class TodoList extends Component {
 
   onAddTodo = (title) => {
     const todo = {
-      key: Math.random(),
+      key: uuidv1(),
       title,
       completed: false,
       createdAt: new Date()
