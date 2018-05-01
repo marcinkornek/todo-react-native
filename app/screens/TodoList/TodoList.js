@@ -1,74 +1,24 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Button, FlatList, View } from 'react-native'
-import uuidv1 from 'uuid/v1'
 import { ListItem, ListItemForm } from '../../components'
-
-const todos = [
-  {
-    key: '1',
-    title: 'todo 1',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '2',
-    title: 'todo 2',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '3',
-    title: 'todo 3',
-    completed: false,
-    createdAt: new Date()
-  }
-]
 
 class TodoList extends Component {
   state = {
-    showAddForm: false,
-    items: todos
+    showAddForm: false
   }
 
   onToggleTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.map((item) => {
-          if (item.key === key) {
-            return ({
-              ...item,
-              completed: !item.completed
-            })
-          }
-          return item
-        })
-      }
-    })
+    this.props.toggleTodo(key)
   }
 
   onDeleteTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.filter((item) => {
-          return item.key !== key
-        })
-      }
-    })
+    this.props.deleteTodo(key)
   }
 
   onAddTodo = (title) => {
-    const todo = {
-      key: uuidv1(),
-      title,
-      completed: false,
-      createdAt: new Date()
-    }
-
     this.toggleShowForm()
-
-    this.setState((prevState) => {
-      return { items: [...prevState.items, todo] }
-    })
+    this.props.addTodo(title)
   }
 
   toggleShowForm = () => {
@@ -88,7 +38,7 @@ class TodoList extends Component {
   }
 
   renderList = () => {
-    const { items } = this.state
+    const { items } = this.props
 
     return (
       <FlatList
@@ -106,10 +56,10 @@ class TodoList extends Component {
       <View>
         {this.renderList()}
         {
-        showAddForm &&
-        <ListItemForm
-          onSubmit={this.onAddTodo}
-        />
+          showAddForm &&
+          <ListItemForm
+            onSubmit={this.onAddTodo}
+          />
         }
         <Button
           onPress={this.toggleShowForm}
@@ -125,6 +75,20 @@ TodoList.navigationOptions = () => {
   return {
     headerTitle: 'Todo list'
   }
+}
+
+TodoList.propTypes = {
+  addTodo: PropTypes.func.isRequired,
+  toggleTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+      createdAt: PropTypes.instanceOf(Date)
+    })
+  )
 }
 
 export default TodoList

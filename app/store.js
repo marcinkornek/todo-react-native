@@ -1,6 +1,6 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore } from 'redux'
 import { composeWithDevTools } from 'remote-redux-devtools'
-import rootReducer from './reducers/index'
+import rootReducer from './redux'
 
 const store = createStore(rootReducer, composeWithDevTools())
 
