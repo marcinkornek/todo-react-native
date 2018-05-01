@@ -1,62 +1,93 @@
 import React, { Component } from 'react'
-import { Button, FlatList, View } from 'react-native'
+import { ActivityIndicator, Button, FlatList, View } from 'react-native'
+import Realm from 'realm'
 import uuidv1 from 'uuid/v1'
 import { ListItem, ListItemForm } from '../../components'
 
-const todos = [
-  {
-    key: '1',
-    title: 'todo 1',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '2',
-    title: 'todo 2',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '3',
-    title: 'todo 3',
-    completed: false,
-    createdAt: new Date()
+const TodoSchema = {
+  name: 'Todo',
+  primaryKey: 'key',
+  properties: {
+    key: 'string',
+    title: 'string',
+    completed: 'bool',
+    createdAt: 'date'
   }
-]
+}
 
 class TodoList extends Component {
   state = {
-    showAddForm: false,
-    items: todos
+    realm: null,
+    items: [],
+    showAddForm: false
+  }
+
+  componentWillMount() {
+    Realm.open({
+      schema: [TodoSchema],
+      deleteRealmIfMigrationNeeded: true // delete the Realm if migration is needed
+    }).then((realm) => {
+      const items = realm.objects('Todo').map((x) => { return Object.assign({}, x) })
+
+      this.setState({ realm, items })
+    })
   }
 
   onToggleTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.map((item) => {
-          if (item.key === key) {
-            return ({
-              ...item,
-              completed: !item.completed
-            })
-          }
-          return item
-        })
+    const { realm, items } = this.state
+
+    const todo = items.find((item) => { return item.key === key })
+
+    if (todo) {
+      const updatedTodo = {
+        ...todo,
+        completed: !todo.completed
       }
-    })
+
+      try {
+        realm.write(() => {
+          realm.create('Todo', updatedTodo, true)
+          this.setState((prevState) => {
+            return {
+              items: prevState.items.map((item) => {
+                if (item.key === key) return updatedTodo
+                return item
+              })
+            }
+          })
+        })
+      } catch (e) {
+        console.log('Error on updating')
+      }
+    }
   }
 
   onDeleteTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.filter((item) => {
-          return item.key !== key
+    const { realm } = this.state
+
+    const todo = realm.objectForPrimaryKey('Todo', key)
+
+    if (todo) {
+      try {
+        realm.write(() => {
+          realm.delete(todo)
+          this.setState((prevState) => {
+            return {
+              items: prevState.items.filter((item) => {
+                return item.key !== key
+              })
+            }
+          })
         })
+      } catch (e) {
+        console.log('Error on deleting')
       }
-    })
+    }
   }
 
   onAddTodo = (title) => {
+    const { realm } = this.state
+
     const todo = {
       key: uuidv1(),
       title,
@@ -66,9 +97,16 @@ class TodoList extends Component {
 
     this.toggleShowForm()
 
-    this.setState((prevState) => {
-      return { items: [...prevState.items, todo] }
-    })
+    try {
+      realm.write(() => {
+        realm.create('Todo', todo)
+        this.setState((prevState) => {
+          return { items: [...prevState.items, todo] }
+        })
+      })
+    } catch (e) {
+      console.log('Error on creating')
+    }
   }
 
   toggleShowForm = () => {
@@ -100,7 +138,9 @@ class TodoList extends Component {
   }
 
   render() {
-    const { showAddForm } = this.state
+    const { realm, showAddForm } = this.state
+
+    if (!realm) return <ActivityIndicator />
 
     return (
       <View>
