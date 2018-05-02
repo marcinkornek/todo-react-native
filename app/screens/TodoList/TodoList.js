@@ -1,74 +1,28 @@
 import React, { Component } from 'react'
 import { Button, FlatList, View } from 'react-native'
-import uuidv1 from 'uuid/v1'
+import { observer } from 'mobx-react'
 import { ListItem, ListItemForm } from '../../components'
+import { Todos } from '../../stores'
 
-const todos = [
-  {
-    key: '1',
-    title: 'todo 1',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '2',
-    title: 'todo 2',
-    completed: false,
-    createdAt: new Date()
-  },
-  {
-    key: '3',
-    title: 'todo 3',
-    completed: false,
-    createdAt: new Date()
-  }
-]
+const todos = new Todos()
 
-class TodoList extends Component {
+const TodoList = observer(class TodoListView extends Component {
   state = {
-    showAddForm: false,
-    items: todos
+    showAddForm: false
   }
 
   onToggleTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.map((item) => {
-          if (item.key === key) {
-            return ({
-              ...item,
-              completed: !item.completed
-            })
-          }
-          return item
-        })
-      }
-    })
+    todos.toggleTodo(key)
   }
 
   onDeleteTodo = (key) => {
-    this.setState((prevState) => {
-      return {
-        items: prevState.items.filter((item) => {
-          return item.key !== key
-        })
-      }
-    })
+    todos.deleteTodo(key)
   }
 
   onAddTodo = (title) => {
-    const todo = {
-      key: uuidv1(),
-      title,
-      completed: false,
-      createdAt: new Date()
-    }
-
     this.toggleShowForm()
 
-    this.setState((prevState) => {
-      return { items: [...prevState.items, todo] }
-    })
+    todos.addTodo(title)
   }
 
   toggleShowForm = () => {
@@ -88,7 +42,7 @@ class TodoList extends Component {
   }
 
   renderList = () => {
-    const { items } = this.state
+    const { items } = todos
 
     return (
       <FlatList
@@ -119,7 +73,7 @@ class TodoList extends Component {
       </View>
     )
   }
-}
+})
 
 TodoList.navigationOptions = () => {
   return {
