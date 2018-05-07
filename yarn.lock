@@ -4086,6 +4086,12 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mobx-persist@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.4.1.tgz#fe5790eda04e0ee0b91c512d1347104e09363f9a"
+  dependencies:
+    serializr "^1.1.11"
+
 mobx-react@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.1.2.tgz#ec5c2d29a1df823dbd1b37e214fa36a0907054e2"
@@ -5207,6 +5213,10 @@ send@0.16.2:
 serialize-error@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-2.1.0.tgz#50b679d5635cdf84667bdc8e59af4e5b81d5f60a"
+
+serializr@^1.1.11:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/serializr/-/serializr-1.2.0.tgz#b337264352e697106b7638c27ffb24cb56226aaa"
 
 serve-static@^1.13.1:
   version "1.13.2"
