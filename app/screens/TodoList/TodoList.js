@@ -6,7 +6,8 @@ import { Todos } from '../../stores'
 
 const todos = new Todos()
 
-const TodoList = class TodoListView extends Component {
+@observer
+class TodoList extends Component {
   state = {
     showAddForm: false
   }
@@ -81,4 +82,4 @@ TodoList.navigationOptions = () => {
   }
 }
 
-export default observer(TodoList)
+export default TodoList
