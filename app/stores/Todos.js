@@ -1,8 +1,9 @@
 import { observable, action } from 'mobx'
+import { persist } from 'mobx-persist'
 import uuidv1 from 'uuid/v1'
 
 class Todos {
-  @observable items = []
+  @persist('list') @observable items = []
 
   @action toggleTodo = (key) => {
     this.items = this.items.map((item) => {

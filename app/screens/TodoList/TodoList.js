@@ -1,15 +1,30 @@
 import React, { Component } from 'react'
-import { Button, FlatList, View } from 'react-native'
+import { ActivityIndicator, AsyncStorage, Button, FlatList, View } from 'react-native'
 import { observer } from 'mobx-react'
+import { create } from 'mobx-persist'
 import { ListItem, ListItemForm } from '../../components'
 import { Todos } from '../../stores'
+
+const hydrate = create({
+  storage: AsyncStorage, // or AsyncStorage in react-native.
+  // default: localStorage
+  jsonify: true // if you use AsyncStorage, here shoud be true
+  // default: true
+})
 
 const todos = new Todos()
 
 @observer
 class TodoList extends Component {
   state = {
+    initialLoading: true,
     showAddForm: false
+  }
+
+  componentDidMount() {
+    hydrate('someObject', todos).then(() => {
+      return this.setState({ initialLoading: false })
+    })
   }
 
   onToggleTodo = (key) => {
@@ -55,7 +70,9 @@ class TodoList extends Component {
   }
 
   render() {
-    const { showAddForm } = this.state
+    const { initialLoading, showAddForm } = this.state
+
+    if (initialLoading) return <ActivityIndicator />
 
     return (
       <View>
