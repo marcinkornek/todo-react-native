@@ -1,3 +1,3 @@
-import TodoList from './TodoList/TodoList'
+import TodoList from './TodoList/TodoListContainer'
 
 export { TodoList }

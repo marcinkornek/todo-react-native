@@ -1,9 +1,12 @@
 import React from 'react'
+import { Provider } from 'unstated'
 import RootNavigator from './RootNavigator'
 
 const App = () => {
   return (
-    <RootNavigator />
+    <Provider>
+      <RootNavigator />
+    </Provider>
   )
 }
 
