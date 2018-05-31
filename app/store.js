@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 import { composeWithDevTools } from 'remote-redux-devtools'
 import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import storage from './storage'
 import rootReducer from './redux/index'
 
 const persistConfig = {
