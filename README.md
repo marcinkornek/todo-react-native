@@ -1,7 +1,8 @@
 ### TODO app in React Native
-This repository contains simple TODO app built to test different state management and persist stores:
+This repository contains simple TODO app built to test different state management and persist stores and storybook:
 #### ready:
 * branch [master](https://github.com/marcinkornek/todo-react-native) - simple TODO app using state, without persisting database
+* branch [storybook](https://github.com/marcinkornek/todo-react-native/tree/storybook) - TODO app as above with added [storybook](https://github.com/storybooks/storybook/tree/master/app/react-native#getting-started)
 * branch [realm](https://github.com/marcinkornek/todo-react-native/tree/realm) - [Realm](https://realm.io/docs/javascript/latest/) as persisted database - it's the simplest implementation without using any other library than [realm-js](https://github.com/realm/realm-js)
 * branch [realm-improved](https://github.com/marcinkornek/todo-react-native/tree/realm-improved) - [Realm](https://realm.io/docs/javascript/latest/) as persisted database - it's the simplest implementation without using any other library than [realm-js](https://github.com/realm/realm-js), improved by moving realm to separate file
 * branch [mobx](https://github.com/marcinkornek/todo-react-native/tree/mobx) - [mobx](https://github.com/mobxjs/mobx) as state container without decorators syntax, without persisting database
