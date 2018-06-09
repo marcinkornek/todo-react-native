@@ -1,11 +1,42 @@
-### TODO app in React Native
-This repository contains simple TODO app built to test different state management and persist stores:
-#### ready:
-* [Realm](https://realm.io/docs/javascript/latest/) as persisted database (branch `add-realm`) - it's the simplest implementation without using any other library than [realm-js](https://github.com/realm/realm-js)
+### TODO app in React Native - with [redux](https://github.com/reduxjs/redux)
+This repository contains simple TODO app built to test different state management and persist stores and storybook
 
-#### not ready:
-* [mobx](https://github.com/mobxjs/mobx) as state container + [mobx-persist](https://github.com/pinqy520/mobx-persist) as persisted database (using React Native [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage.html))
-* [redux](https://github.com/reactjs/redux) as state container + [redux-persist](https://github.com/rt2zz/redux-persist) as persisted database (using React Native [AsyncStorage](https://facebook.github.io/react-native/docs/asyncstorage.html))
-* [React Context-API](https://reactjs.org/docs/context.html)
-* [react-waterfall](https://github.com/didierfranc/react-waterfall) - React store built on top of the new context API
-...
+click [here](https://github.com/marcinkornek/todo-react-native) to go to base branch with all other branches described
+
+#### Description
+* uses [redux](https://github.com/reduxjs/redux) as state container, without persisting database
+
+#### Prerequisites
+* [React Native](https://facebook.github.io/react-native/docs/getting-started.html)
+* [Yarn](https://yarnpkg.com/en/docs/install)
+
+#### Instalation
+1. Clone the repo:
+```sh
+$ git clone git@github.com:marcinkornek/todo-react-native.git
+$ cd todo-react-native
+```
+2. Open redux branch:
+```sh
+$ git checkout redux
+```
+3. Install dependencies:
+```sh
+$ yarn
+```
+
+#### Running/Development
+* Build and run iOS app
+```sh
+$ yarn ios
+```
+* Build and run Android app
+```sh
+$ yarn android
+```
+* Clean cache
+```sh
+$ yarn clean
+```
+* Debugging with [remote-redux-devtools](https://github.com/zalmoxisus/remote-redux-devtools):
+open [http://remotedev.io/local/](http://remotedev.io/local/)
